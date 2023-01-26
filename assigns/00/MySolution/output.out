@@ -1,0 +1,71 @@
+Poly/ML 5.9 Release
+val chr = fn: int -> char
+val ord = fn: char -> int
+val str = fn: char -> string
+val strcat = fn: string * string -> string
+val strlen = fn: string -> int
+val strsub = fn: string * int -> char
+val it = (): unit
+val N = 21: int
+val catchOverflow = fn: int -> int
+val it = (): unit
+Assign00-01-test passed!
+> Compilation interrupted
+
+> Poly/ML 5.9 Release
+val chr = fn: int -> char
+val ord = fn: char -> int
+val str = fn: char -> string
+val strcat = fn: string * string -> string
+val strlen = fn: string -> int
+val strsub = fn: string * int -> char
+val it = (): unit
+val isPrime = fn: int -> bool
+val it = (): unit
+Assign00-02-test passed!
+> Compilation interrupted
+
+> Poly/ML 5.9 Release
+val chr = fn: int -> char
+val ord = fn: char -> int
+val str = fn: char -> string
+val strcat = fn: string * string -> string
+val strlen = fn: string -> int
+val strsub = fn: string * int -> char
+val it = (): unit
+val int2str = fn: int -> string
+val it = (): unit
+Assign00-03-test passed!
+> Compilation interrupted
+
+Poly/ML 5.9 Release
+val chr = fn: int -> char
+val ord = fn: char -> int
+val str = fn: char -> string
+val strcat = fn: string * string -> string
+val strlen = fn: string -> int
+val strsub = fn: string * int -> char
+val it = (): unit
+val int2str = fn: int -> string
+val it = (): unit
+val str2int = fn: string -> int
+val it = (): unit
+Assign00-04-test passed!
+> Compilation interrupted
+
+> Poly/ML 5.9 Release
+val chr = fn: int -> char
+val ord = fn: char -> int
+val str = fn: char -> string
+val strcat = fn: string * string -> string
+val strlen = fn: string -> int
+val strsub = fn: string * int -> char
+val it = (): unit
+val int2str = fn: int -> string
+val it = (): unit
+val stringrev = fn: string -> string
+val it = (): unit
+Assign00-05-test passed!
+> Compilation interrupted
+
+> 
