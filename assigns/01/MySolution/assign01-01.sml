@@ -1,11 +1,11 @@
-use "./../assign01-lib.sml";
+use "./../assign01.sml";
 
-fun size_of_xlist(xs: 'a xlist): int =
+fun xlist_size(xs: 'a xlist): int =
     (
         case xs of
             xlist_nil => 0
-        |   xlist_cons(x, xs') => 1 + size_of_xlist(xs')
-        |   xlist_snoc(xs', x) => 1 + size_of_xlist(xs')
-        |   xlist_append(xs', ys') => size_of_xlist(xs') + size_of_xlist(ys')
-        |   xlist_reverse(xs') => size_of_xlist(xs')
+        |   xlist_cons(x, xs') => 1 + xlist_size(xs')
+        |   xlist_snoc(xs', x) => 1 + xlist_size(xs')
+        |   xlist_append(xs', ys') => xlist_size(xs') + xlist_size(ys')
+        |   xlist_reverse(xs') => xlist_size(xs')
     )
