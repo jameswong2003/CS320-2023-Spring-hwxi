@@ -1,19 +1,15 @@
 use "./../assign01.sml";
 
- fun xlist_remove_reverse(xs: 'a xlist): 'a xlist = 
-  let 
-    (* Reverses the xlist *)
-    fun helper(xs: 'a xlist, acc: 'a xlist): 'a xlist = 
-      (
-        case xs of 
-        xlist_nil => acc
-        | xlist_cons(x, xs') => helper(xs', xlist_cons(x, acc))
-        | xlist_snoc(xs', x) => helper(xs', xlist_snoc(acc, x))
-        | xlist_append(xs1, xs2) => helper(xs2, helper(xs1, acc))
-        | xlist_reverse(xs') => 
-      )
-  in 
-      case xs of 
-      xlist_reverse(xs') => helper(xs', xlist_nil)
-      | _ => xs
-  end 
+fun xlist_remove_reverse(xs: 'a xlist): 'a xlist =
+    case xs of
+       xlist_nil => xs
+     | xlist_cons(x1, xs) => xlist_cons(x1, xlist_remove_reverse(xs))
+     | xlist_snoc(xs, x1) => xlist_snoc(xlist_remove_reverse(xs), x1)
+     | xlist_append(xs, ys) => xlist_append(xlist_remove_reverse(xs), xlist_remove_reverse(ys))
+     | xlist_reverse(xs) => 
+     case xs of
+        xlist_nil => xs
+     | xlist_cons(x1, xs) => xlist_snoc(xlist_remove_reverse(xs), x1)
+     | xlist_snoc(xs, x1) => xlist_cons(x1, xlist_remove_reverse(xs))
+     | xlist_append(xs, ys) => xlist_append(xlist_remove_reverse(ys), xlist_remove_reverse(xs))
+     | xlist_reverse(xs) => xlist_reverse(xlist_remove_reverse(xs))
