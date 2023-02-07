@@ -177,6 +177,21 @@ card5_fullhouse(cs: card5): bool =
 (*
 Please Give your implementation as follows:
 *)
+  let
+    val rank1 = rank2int(card_rank(#1(cs)))
+    val rank2 = rank2int(card_rank(#2(cs)))
+    val rank3 = rank2int(card_rank(#3(cs)))
+    val rank4 = rank2int(card_rank(#4(cs)))
+    val rank5 = rank2int(card_rank(#5(cs)))
+    val cards = int5_sort((rank1, rank2, rank3, rank4, rank5))
+
+    val (c1, c2, c3, c4, c5) = cards
+  in
+    if (c1 = c2) andalso (c2 = c3) andalso (c4 = c5)
+    then true
+    else false
+  end
+
 
 (* ****** ****** *)
 
