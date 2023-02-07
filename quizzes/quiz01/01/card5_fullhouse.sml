@@ -255,78 +255,24 @@ fun card5_fullhouse(cs: card5): bool
 *)
 
 fun
-card5_fullhouse(cs: card5): bool =
-let
-  type cards3 = card*card*card
-  fun helper_trip(cs : card5): bool=
-    let
-        val c1 = #1 cs;
-        val c2 = #2 cs;
-        val c3 = #3 cs;
-        val c4 = #4 cs;
-        val c5 = #5 cs;
-    in
-        ((#2 c1 = #2 c2) andalso (#2 c1 = #2 c3)) orelse
-        ((#2 c1 = #2 c2) andalso (#2 c1 = #2 c4)) orelse
-        ((#2 c1 = #2 c2) andalso (#2 c1 = #2 c5)) orelse
-        ((#2 c1 = #2 c3) andalso (#2 c1 = #2 c4)) orelse
-        ((#2 c1 = #2 c3) andalso (#2 c1 = #2 c5)) orelse
-        ((#2 c1 = #2 c4) andalso (#2 c1 = #2 c5)) orelse
-        ((#2 c2 = #2 c3) andalso (#2 c2 = #2 c4)) orelse
-        ((#2 c2 = #2 c3) andalso (#2 c2 = #2 c5)) orelse
-        ((#2 c2 = #2 c4) andalso (#2 c2 = #2 c5)) orelse
-        ((#2 c3 = #2 c4) andalso (#2 c3 = #2 c5))
-    end;
-  fun helper_pair(cs : card5): cards3 =
-    let
-        val c1 = #1 cs;
-        val c2 = #2 cs;
-        val c3 = #3 cs;
-        val c4 = #4 cs;
-        val c5 = #5 cs;
-    in
-        if (#2 c1 = #2 c2)
-        then (c3,c4,c5)
-        else if (#2 c1 = #2 c3)
-        then (c2,c4,c5)
-        else if (#2 c1 = #2 c4)
-        then (c2,c3,c5)
-        else if (#2 c1 = #2 c5)
-        then (c2,c3,c4)
-        else if (#2 c2 = #2 c3)
-        then (c1,c4,c5)
-        else if (#2 c2 = #2 c4)
-        then (c1,c3,c5)
-        else if (#2 c2 = #2 c5)
-        then (c1,c3,c4)
-        else if (#2 c3 = #2 c4)
-        then (c1,c2,c5)
-        else if (#2 c3 = #2 c5)
-        then (c1,c2,c4)
-        else (c1,c2,c3)
+card5_fullhouse(cs: card5): bool = 
 
-    end;
-  fun helper_2pair(cs : cards3): bool =
-    let
-        val c1 = #1 cs;
-        val c2 = #2 cs;
-        val c3 = #3 cs;
-    in
-        if (#2 c1 = #2 c2)
-        then true
-        else if (#2 c1 = #2 c3)
-        then true
-        else if (#2 c2 = #2 c3)
-        then true
-        else false
-    end;
+let 
+    val c1 = rank2int(card_rank(#1(cs)))
+    val c2 = rank2int(card_rank(#2(cs)))
+    val c3 = rank2int(card_rank(#3(cs)))
+    val c4 = rank2int(card_rank(#4(cs)))
+    val c5 = rank2int(card_rank(#5(cs)))
+    val card = int5_sort(c1, c2, c3, c4, c5)
 
-in
-if (helper_trip(cs))
-then 
-  helper_2pair(helper_pair(cs))
-else false
-end
+in 
+  if (#1(card) = #2(card)) andalso (#2(card) = #3(card)) andalso (#4(card) = #5(card)) orelse ((#3(card) = #4(card)) andalso (#3(card) = #5(card)) andalso (#1(card) = #2(card)) )
+    then true   
+  else 
+    false 
+end 
+
+
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-quiz01-card5_fullhouse.sml] *)
