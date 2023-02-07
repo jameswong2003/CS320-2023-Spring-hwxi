@@ -54,7 +54,7 @@ int5_sort_nr(xs: int5): int5 =
 (*
 Please Give your implementation as follows:
 *)
-
+xs
 
 (* ****** ****** *)
 
