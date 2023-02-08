@@ -54,7 +54,47 @@ int5_sort_nr(xs: int5): int5 =
 (*
 Please Give your implementation as follows:
 *)
-xs
+let
+  val c1 = #1 xs
+  val c2 = #2 xs
+  val c3 = #3 xs
+  val c4 = #4 xs
+  val c5 = #5 xs
+
+  fun helper_int2(xs: int2): int2 =
+    if (c1 < c2)
+    then (c1,c2)
+    else (c2,c1)
+
+  fun helper_int3(xs: int2): int3 =
+    if (c3 < #1 xs)
+    then (c3, #1 xs, #2 xs)
+    else if (c3 < #2 xs)
+    then (#1 xs, c3, #2 xs)
+    else (#1 xs, #2 xs, c3)
+
+  fun helper_int4(xs: int3): int4 =
+    if(c4 < #1 xs)
+    then (c4, #1 xs, #2 xs, #3 xs)
+    else if (c4 < #2 xs)
+    then (#1 xs, c4, #2 xs, #3 xs)
+    else if (c4 < #3 xs)
+    then (#1 xs, #2 xs, c4, #3 xs)
+    else (#1 xs, #2 xs, #3 xs, c4)
+
+  fun helper_int5(xs: int4): int5 =
+    if(c5 < #1 xs)
+    then (c5, #1 xs, #2 xs, #3 xs, #4 xs)
+    else if (c5 < #2 xs)
+    then (#1 xs, c5, #2 xs, #3 xs, #4 xs)
+    else if (c5 < #3 xs)
+    then (#1 xs, #2 xs, c5, #3 xs, #4 xs)
+    else if (c5 < #4 xs)
+    then (#1 xs, #2 xs, #3 xs, c5, #4 xs)
+    else (#1 xs, #2 xs, #3 xs, #4 xs, c5)
+in
+  helper_int5(helper_int4(helper_int3(helper_int2((c1, c2)))))
+end
 
 (* ****** ****** *)
 
