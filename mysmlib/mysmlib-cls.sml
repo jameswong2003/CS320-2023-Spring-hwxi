@@ -107,4 +107,57 @@ case xs of SOME x0 => x0 | _ => raise ConsMatch320)
 
 (* ****** ****** *)
 
+fun
+list_length
+(xs: 'a list): int =
+let
+  fun
+  loop
+  (xs: 'a list, res: int): int =
+  case xs of
+    nil => res
+  | _ :: xs => loop(xs, res+1)
+in
+  loop(xs, 0)
+end (* end of [list_length(xs)]: let *)
+
+(* ****** ****** *)
+
+fun
+list_map
+(xs: 'a list, fopr: 'a -> 'b): 'b list =
+(
+case xs of
+  nil => nil
+| x1 :: xs => fopr(x1) :: list_map(xs, fopr)
+)
+
+(* ****** ****** *)
+
+fun
+list_reduce_left
+( r0: 'r, xs: 'a list
+, fopr: 'r * 'a -> 'r): 'r =
+(
+case xs of
+  nil => r0
+| x1 :: xs =>
+  list_reduce_left(fopr(r0, x1), xs, fopr)
+)
+
+(* ****** ****** *)
+
+fun
+list_reduce_right
+( xs: 'a list
+, r0: 'r, fopr: 'a * 'r -> 'r): 'r =
+(
+case xs of
+  nil => r0
+| x1 :: xs =>
+  fopr(x1, list_reduce_right(xs, r0, fopr))
+)
+  
+(* ****** ****** *)
+
 (* end of [BUCASCS320-2023-Spring-mysmlib-cls.sml] *)
