@@ -160,4 +160,38 @@ case xs of
   
 (* ****** ****** *)
 
+(*
+val list_foldleft = list_reduce_left
+val list_foldright = list_reduce_right
+*)
+
+(* ****** ****** *)
+
+val
+list_append = (* a.k.a. '@' *)
+fn(xs: 'a list, ys: 'a list) =>
+list_reduce_right(xs, ys, fn(x, r) => x :: r)
+
+(* ****** ****** *)
+
+val
+list_reverse = (* a.k.a. List.rev *)
+fn(xs: 'a list) =>
+list_reduce_left([], xs, fn(r, x) => x :: r)
+val
+list_rappend =
+fn(xs: 'a list, ys: 'a list) =>
+list_reduce_left(ys, xs, fn(r, x) => x :: r)
+
+(* ****** ****** *)
+
+val
+list_foreach = (* a.k.a. 'list_app' *)
+fn
+( xs: 'a list
+, work: 'a -> unit) =>
+list_reduce_left((), xs, fn(r, x) => work(x))
+
+(* ****** ****** *)
+
 (* end of [BUCASCS320-2023-Spring-mysmlib-cls.sml] *)
