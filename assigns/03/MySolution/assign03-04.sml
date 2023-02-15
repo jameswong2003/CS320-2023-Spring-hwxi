@@ -35,17 +35,17 @@ fun list_longest_ascend(xs : int list) : int list =
         fun list_size_compare(xs : 'a list, ys : 'a list) : 'a list =
             case list_size(xs) >= list_size(ys) of
                 true => xs
-            | false => ys
+            |   false => ys
 
         fun longest_head(xs : int list) : int list =
             case xs of
                 [] => []
              | [x] => [x]
              | x1 :: x2 :: xs => 
-             if x1 <= x2 then
-                list_size_compare(x1 :: longest_head(x2 :: xs), longest_head(x1 :: xs))
-                else
-                longest_head(x1 :: xs)
+            if x1 <= x2 then
+            list_size_compare(x1 :: longest_head(x2 :: xs), longest_head(x1 :: xs))
+            else
+            longest_head(x1 :: xs)
 
         fun get_longest(xs : int list, long : int list) : int list =
             case xs of
