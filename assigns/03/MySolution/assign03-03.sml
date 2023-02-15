@@ -19,3 +19,13 @@ list_tabulate(n: int, f: int -> 'a): 'a list
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-assign03-03.sml] *)
+fun list_tabulate(n: int, f: int -> 'a): 'a list = 
+let
+    fun create_list(n: int, f: int -> 'a, l: 'a list): 'a list =
+    if n <= 0 then l
+    else
+        create_list(n - 1, f, f(n-1) :: l)
+        
+in
+    create_list(n, f, nil)
+end

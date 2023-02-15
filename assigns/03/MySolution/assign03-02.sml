@@ -25,3 +25,12 @@ fun list_range(start: int, finish: int): int list
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-assign03-02.sml] *)
+
+fun list_range(start: int, finish: int): int list = 
+let
+    fun create_list(s: int, e: int, l: int list): int list =
+        if s >= e then l
+        else create_list(s+1, e, l @ [s])
+in
+    create_list(start, finish, nil)
+end
