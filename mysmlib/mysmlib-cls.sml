@@ -163,13 +163,13 @@ case xs of
 
 fun
 list_reduce_left
-( r0: 'r, xs: 'a list
-, fopr: 'r * 'a -> 'r): 'r =
+( xs: 'a list
+, r0: 'r, fopr: 'r * 'a -> 'r): 'r =
 (
 case xs of
   nil => r0
 | x1 :: xs =>
-  list_reduce_left(fopr(r0, x1), xs, fopr)
+  list_reduce_left(xs, fopr(r0, x1), fopr)
 )
 
 (* ****** ****** *)
@@ -211,11 +211,11 @@ val list_foldright = list_reduce_right
 val
 list_reverse = (* a.k.a. List.rev *)
 fn(xs: 'a list) =>
-list_reduce_left([], xs, fn(r, x) => x :: r)
+list_reduce_left(xs, [], fn(r, x) => x :: r)
 val
 list_rappend =
 fn(xs: 'a list, ys: 'a list) =>
-list_reduce_left(ys, xs, fn(r, x) => x :: r)
+list_reduce_left(xs, ys, fn(r, x) => x :: r)
 
 (* ****** ****** *)
 
@@ -224,7 +224,7 @@ list_foreach = (* a.k.a. 'list_app' *)
 fn
 ( xs: 'a list
 , work: 'a -> unit) =>
-list_reduce_left((), xs, fn(r, x) => work(x))
+list_reduce_left(xs, (), fn(r, x) => work(x))
 
 (* ****** ****** *)
 
@@ -312,8 +312,8 @@ foreach_to_foldleft
 ( foreach
 : ('xs * ('x0 -> unit)) -> unit
 )
-: ('r0 * 'xs * ('r0*'x0 -> 'r0)) -> 'r0 =
-fn(r0, xs, fopr) =>
+: ('xs * 'r0 * ('r0*'x0 -> 'r0)) -> 'r0 =
+fn(xs, r0, fopr) =>
 let
 val res = ref(r0)
 in
@@ -331,7 +331,7 @@ foreach:
 ('xs*('x0->unit))->unit): 'xs -> int =
 fn(xs) =>
 (foreach_to_foldleft
- (foreach)(0, xs, fn(r0, x0) => r0 + 1))
+ (foreach)(xs, 0, fn(r0, x0) => r0 + 1))
 
 (* ****** ****** *)
 
@@ -349,7 +349,7 @@ in (*let*)
 let
 val r0 =
 foldleft
-( 0, xs
+( xs, 0
 , fn(r0, x0) =>
   if i0 = r0 then
   raise Found(x0) else r0+1) in raise Subscript
@@ -369,7 +369,7 @@ fn(xs) =>
 list_reverse
 (
 foreach_to_foldleft
-(foreach)(nil, xs, fn(r0, x0) => x0 :: r0)))
+(foreach)(xs, nil, fn(r0, x0) => x0 :: r0)))
 
 (* ****** ****** *)
 
@@ -380,7 +380,7 @@ foreach:
 ('xs*('x0->unit))->unit): 'xs -> 'x0 list =
 fn(xs) =>
 (foreach_to_foldleft
- (foreach)(nil, xs, fn(r0, x0) => x0 :: r0))
+ (foreach)(xs, nil, fn(r0, x0) => x0 :: r0))
 
 (* ****** ****** *)
 
@@ -397,7 +397,7 @@ fn(xs, fopr) =>
 list_reverse
 (
 foreach_to_foldleft
-(foreach)(nil, xs, fn(r0, x0) => fopr(x0) :: r0)))
+(foreach)(xs, nil, fn(r0, x0) => fopr(x0) :: r0)))
 
 (* ****** ****** *)
 
@@ -414,7 +414,7 @@ fn(xs, test) =>
 list_reverse
 (
 foreach_to_foldleft(foreach)
-( nil, xs
+( xs, nil
 , fn(r0, x0) => if test(x0) then x0 :: r0 else r0)))
 
 (* ****** ****** *)
@@ -435,7 +435,7 @@ foreach_to_forall(list_foreach)(xs, test)
 
 val
 string_forall =
-fn( cs, test ) =>
+fn(cs, test) =>
 int1_forall
 (String.size(cs), fn(i) => test(String.sub(cs, i)))
 
@@ -450,25 +450,41 @@ foreach_to_get_at(list_foreach)(xs, i0)
 
 val
 int1_listize =
-fn(xs) => foreach_to_listize(int1_foreach)(xs)
+fn(xs) =>
+foreach_to_listize(int1_foreach)(xs)
 val
 int1_rlistize =
-fn(xs) => foreach_to_rlistize(int1_foreach)(xs)
+fn(xs) =>
+foreach_to_rlistize(int1_foreach)(xs)
 
 (* ****** ****** *)
 
 val
 list_rlistize =
-fn(xs) => foreach_to_rlistize(list_foreach)(xs)
+fn(xs) =>
+foreach_to_rlistize(list_foreach)(xs)
 
 (* ****** ****** *)
 
 val
 string_listize =
-fn(xs) => foreach_to_listize(string_foreach)(xs)
+fn(xs) =>
+foreach_to_listize(string_foreach)(xs)
 val
 string_rlistize =
-fn(xs) => foreach_to_rlistize(string_foreach)(xs)
+fn(xs) =>
+foreach_to_rlistize(string_foreach)(xs)
+
+(* ****** ****** *)
+
+val
+int1_map_list =
+fn(xs,fopr) =>
+foreach_to_map_list(int1_foreach)(xs,fopr)
+val
+string_map_list =
+fn(xs,fopr) =>
+foreach_to_map_list(string_foreach)(xs,fopr)
 
 (* ****** ****** *)
 
@@ -479,7 +495,7 @@ foreach_to_foldleft(int1_foreach)(r0,xs,fopr)
 val
 int1_foldright =
 fn(xs,r0,fopr) =>
-int1_foldleft(r0, xs, fn(r0, x0) => fopr(xs-1-x0, r0))
+int1_foldleft(xs, r0, fn(r0, x0) => fopr(xs-1-x0, r0))
 
 (* ****** ****** *)
 
@@ -498,12 +514,12 @@ val
 string_foldleft =
 fn( r0,cs,fopr ) =>
 int1_foldleft
-(r0, String.size(cs), fn(r0, i0) => fopr(r0, String.sub(cs, i0)))
+(String.size(cs), r0, fn(r0, i0) => fopr(r0, String.sub(cs, i0)))
 val
 string_foldright =
 fn( cs,r0,fopr ) =>
 int1_foldright
-(r0, String.size(cs), fn(i0, r0) => fopr(String.sub(cs, i0), r0))
+(String.size(cs), r0, fn(i0, r0) => fopr(String.sub(cs, i0), r0))
 
 (* ****** ****** *)
 
