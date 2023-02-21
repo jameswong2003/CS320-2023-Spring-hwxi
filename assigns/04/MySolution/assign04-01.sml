@@ -35,6 +35,22 @@ val isPrime =
 fn(num: int) =>
 let
   exception NotPrime
-  
+  val n = ref num
+  val checkPrime =
+  fn() =>
+  if (!n < 2 orelse !n = num orelse num mod !n > 0)
+    then n := !n - 2
+  else
+    raise NotPrime
 in
+  let
+    val check = SOME(int0_foreach(num, checkPrime)) handle NotPrime => NONE
+  in
+    if num < 2
+      then false
+    else if (check = NONE)
+      then false
+    else
+      true
+  end
 end
