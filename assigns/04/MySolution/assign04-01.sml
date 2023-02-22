@@ -35,7 +35,7 @@ val isPrime =
 fn(num: int) =>
 let
   exception NotPrime
-  val n = ref num
+  val n = ref(num)
   val checkPrime =
   fn() =>
   if (!n < 2 orelse !n = num orelse num mod !n > 0)
