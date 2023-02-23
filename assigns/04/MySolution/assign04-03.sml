@@ -47,6 +47,5 @@ forall_to_exists
 
 fun
 forall_to_exists (forall: ('xs,'x0)forall_t): ('xs,'x0)exists_t =
-    case forall of
-        f => fn(xs: 'xs, test: ('x0 -> bool)) =>
-            not (f(xs, fn(x) => not (test(x))))
+    fn(xs: 'xs, test: ('x0 -> bool)) =>
+        not (forall(xs, fn(x) => not (test(x))))
