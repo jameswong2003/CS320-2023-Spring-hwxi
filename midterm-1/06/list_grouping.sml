@@ -48,3 +48,16 @@ val nxs = list_grouping(int1_map_list(N, fn i => N-i))
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-midterm1-list_grouping.sml] *)
+
+fun list_grouping xs =
+  let
+    fun count_elem (x, []) = 0
+      | count_elem (x, y::ys) = if x = y then 1 + count_elem(x, ys) else count_elem(x, ys)
+    
+    fun remove_duplicates [] = []
+      | remove_duplicates (x::xs) = x :: remove_duplicates (list_filter(xs, fn(y) => y <> x))
+    
+    val counts = list_map((remove_duplicates xs), (fn x => (count_elem(x, xs), x)))
+  in
+    counts
+  end
