@@ -65,3 +65,19 @@ magic_triangle (n : int) : int list list = ...
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-midterm1-magic_triangle.sml] *)
+
+fun magic_triangle n =
+  let
+    fun row 0 = [1]
+      | row k =
+          let
+            val prev_row = row (k - 1)
+            fun sum_pairs [] = []
+              | sum_pairs [x] = [x]
+              | sum_pairs (x :: y :: xs) = (x + y) :: sum_pairs (y :: xs)
+          in
+            1 :: sum_pairs prev_row @ [1]
+          end
+  in
+    list_tabulate (n, row)
+  end
