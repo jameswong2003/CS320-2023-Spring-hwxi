@@ -36,3 +36,16 @@ list_nchoose2(xs: int list): (int * int) list = ...
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-midterm1-list_nchoose2.sml] *)
+
+fun
+list_nchoose2(xs: int list): (int * int) list =
+    let
+        val a = ref []
+        val _ = foreach_to_iforeach(list_foreach)(xs, fn(i, n) =>  
+                foreach_to_iforeach(list_foreach)(xs, fn(p, x) => if (p = i) then () else if
+                (n < x) then a := list_append(!a, [(n,x)])
+                else () )
+        )
+    in
+        !a
+    end
