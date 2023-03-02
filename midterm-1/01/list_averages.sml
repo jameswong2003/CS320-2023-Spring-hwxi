@@ -37,3 +37,17 @@ list_averages(xs: real list): real list = ...
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-midterm1-list_averages.sml] *)
+
+fun list_averages(xs: real list): real list =
+    let
+        fun loop([], _, _, ys) = ys
+          | loop(x::xs', prev_sum, i, ys) =
+            let
+                val new_sum = prev_sum + x
+                val new_average = new_sum / (int2real (i + 1))
+            in
+                loop(xs', new_sum, i + 1, new_average::ys)
+            end
+    in
+        list_reverse(loop(xs, 0.0, 0, []))
+    end
