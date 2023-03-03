@@ -34,19 +34,18 @@ list_pairing
 
 (* end of [CS320-2023-Spring-midterm1-list_pairing.sml] *)
 
-fun list_pairing(xs : int list) =
-    let
-        fun helper(lst, res) =
-            case lst of
-                [] => (res, NONE)
-              | [x] => (res, SOME(x))
-              | x::xs' => 
-                  let
-                      val last = hd(rev(xs'))
-                      val pairs = (x, last)::res
-                  in
-                      helper(tl(xs'), pairs)
-                  end
-    in
-        helper(xs, [])
-    end
+fun list_pairing(xs: 'a list): ('a * 'a) list * 'a option =
+  let
+    fun helper(left: 'a list, right: 'a list, middle: 'a option): ('a * 'a) list * 'a option =
+      case (left, right, middle) of
+        ([], [], m) => ([], m)
+      | ([x], [], m) => ([], SOME x)
+      | (x::xs, y::ys, m) =>
+          let
+            val (pairs, middle') = helper(xs, ys, m)
+          in
+            ((x, y)::pairs, middle')
+          end
+  in
+    helper(xs, rev xs, NONE)
+  end
