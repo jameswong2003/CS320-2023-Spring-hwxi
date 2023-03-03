@@ -69,3 +69,37 @@ foreach_to_map_list(string_iforeach)(cs, ifopr)
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-midterm1-word_neighbors.sml] *)
+
+fun word_neighbors(word: string): string list =
+    foreach_to_ifoldleft(string_foreach)(word, [], fn(l, i, c) =>
+        let
+            val final = ref [""]
+            val _ = final := []
+            val new_word_list = ref (string_listize(word))
+            val r = ref ~1
+
+            val make_nw = fn(p) =>
+                if (p = i)
+                    then new_word_list := !new_word_list @ [strsub(AB, !r)]
+                else
+                    new_word_list := !new_word_list @ [strsub(word, p)]
+            val check = fn(n) =>
+                if (strsub(AB, n) = c)
+                    then ()
+                else
+                    let
+                        val _ = r := n
+                        val _ = new_word_list := []
+                        val _ = int1_foreach(string_length(word), make_nw)
+                        val nw = string_implode(!new_word_list)
+                    in
+                        if (list_exists(l, fn(x) => nw = x))
+                            then ()
+                        else
+                            final := !final @ [nw]
+                    end
+            val _ = int1_foreach(26, check)
+        in
+            list_append(l, !final)
+        end
+    )
