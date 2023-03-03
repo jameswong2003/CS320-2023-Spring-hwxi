@@ -130,48 +130,17 @@ val ans2 = bintr_balanced_nonrec(NODE(t2, t3))
 
 (* end of [CS320-2023-Spring-midterm1-balance_test_nonrec.sml] *)
 
-val bintr_balanced_nonrec =
-fn (t0: 'a bintr) =>
-let
-  (* Define a stack to store unvisited nodes *)
-  val stack = ref([])
-
-  (* Initialize the stack with the root node and its size *)
-  val () = stack := [(t0, bintr_size t0)]
-
-  (* Track the size of the left and right subtrees *)
-  val (left_size, right_size) = ref(0), ref(0)
-
-  (* Track if the tree is balanced or not *)
-  val balanced = ref(true)
-
-  (* Traverse the tree iteratively *)
-  while !stack <> [] andalso !balanced do
-    (* Pop the top node from the stack *)
-    val (node, size) = hd(!stack)
-    val () = stack := tl(!stack)
-
-    (* Check if the node is a leaf *)
-    case node of
-      LEAF _ => ()
-
-    (* If the node is a branch, push its children onto the stack *)
-    | NODE(tl, tr) =>
-        let
-          val tl_size = bintr_size tl
-          val tr_size = bintr_size tr
-
-          (* Check if the sizes of the subtrees are equal *)
-          val () = if !left_size = 0 then left_size := tl_size
-                   else if tl_size <> !left_size then balanced := false
-                   else ()
-          val () = if !right_size = 0 then right_size := tr_size
-                   else if tr_size <> !right_size then balanced := false
-                   else ()
-
-          val () = stack := (tl, tl_size) :: (tr, tr_size) :: !stack
-        end
-  (* If we get here, all subtree sizes were equal *)
-  in
-    !balanced
-  end
+val bintr_balanced_nonrec = fn(t0: 'a bintr) => 
+    let
+    val (balanced, _, _) =
+        bintr_fold(t0, fn _ => (true, 0, 0), fn ((lb1, hb1, sb1), (lb2, hb2, sb2)) =>
+            let
+                val bal = lb1 andalso lb2 andalso hb1 = hb2
+                val h = 1 + int_max(hb1, hb2)
+                val s = sb1 + sb2
+            in
+                (bal, h, s)
+            end)
+    in
+        balanced
+    end
