@@ -48,3 +48,28 @@ ref_ifoldleft
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-assign05-01.sml] *)
+
+fun
+ref_get_at
+(ref: 'a ref, i: int): 'a =
+if i > 0 then raise Subscript else !ref
+
+fun
+ref_forall
+(ref: 'a ref, test: 'a -> bool): bool =
+if (test(!ref)) then true else false
+
+fun
+ref_map_list
+(ref: 'a ref, fopr: ('a) -> 'b): 'b list =
+[fopr(!ref)]
+
+fun
+ref_foldleft
+(ref: 'a ref, res: 'r, fopr: ('r * 'a) -> 'r): 'r =
+fopr(res, !ref)
+
+fun
+ref_ifoldleft
+(ref: 'a ref, res: 'r, fopr: ('r * int * 'a) -> 'r): 'r =
+fopr(res, 0, !ref)
