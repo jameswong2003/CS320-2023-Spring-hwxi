@@ -17,6 +17,8 @@ def word_neighbors(word):
     Your implementation should be combinator-based very
     much like the posted solution.
     """
+    length = len(word)
+    
     raise NotImplementedError
 #
 ####################################################
