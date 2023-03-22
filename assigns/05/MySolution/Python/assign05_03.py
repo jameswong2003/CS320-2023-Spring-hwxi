@@ -72,15 +72,12 @@ def image_invert_color(ximg):
 
 ####################################################
 #
-# towers = \
-#     load_color_image("INPUT/towers.jpg")
-# balloons = \
-#     load_color_image("INPUT/balloons.png")
+balloons = \
+    load_color_image("INPUT/balloons.png")
 #
 ####################################################
 #
-# save_color_image(image_invert_color(towers), "OUTPUT/towers_invert.png")
-# save_color_image(image_invert_color(balloons), "OUTPUT/balloons_invert.png")
+save_color_image(image_invert_color(balloons), "OUTPUT/balloons_invert.png")
 #
 ####################################################
 
@@ -155,6 +152,7 @@ def image_seam_carving_color(image, ncol):
     """
     assert ncol < image.width
     energy = image_edges_color(image)
+    print(energy)
     raise NotImplementedError
 
 ####################################################
