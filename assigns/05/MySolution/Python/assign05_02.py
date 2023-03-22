@@ -17,8 +17,18 @@ def word_neighbors(word):
     Your implementation should be combinator-based very
     much like the posted solution.
     """
+    def string_implode(word_list):
+        return foreach_to_foldleft(pylist_foreach)(word_list, "", lambda s, chr: s + chr)
+    def string_tabulate(length, fopr):
+        return string_implode(pylist_foldright(int1_foldleft(length, [], lambda xs, i: [[fopr(i)]] + xs), [], lambda r, x: x + r))
+
     length = len(word)
+    AB = "abcdefghijklmnopqrstuvwxyz"
+
+    return fnlist_concat(string_imap_fnlist(word, lambda i, c: fnlist_concat(string_imap_fnlist(AB, lambda _, c1: fnlist_sing(string_tabulate(length, lambda j: word[j] if i != j else c1)) if (c != c1) else fnlist_nil()))))
+
     
+
     raise NotImplementedError
 #
 ####################################################

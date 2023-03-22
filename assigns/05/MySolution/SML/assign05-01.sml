@@ -51,25 +51,25 @@ ref_ifoldleft
 
 fun
 ref_get_at
-(ref: 'a ref, i: int): 'a =
-if i > 0 then raise Subscript else !ref
+(r0: 'a ref, i: int): 'a =
+if i > 0 then raise Subscript else !r0
 
 fun
 ref_forall
-(ref: 'a ref, test: 'a -> bool): bool =
-if (test(!ref)) then true else false
+(r0: 'a ref, test: 'a -> bool): bool =
+if (test(!r0)) then true else false
 
 fun
 ref_map_list
-(ref: 'a ref, fopr: ('a) -> 'b): 'b list =
-[fopr(!ref)]
+(r0: 'a ref, fopr: ('a) -> 'b): 'b list =
+[fopr(!r0)]
 
 fun
 ref_foldleft
-(ref: 'a ref, res: 'r, fopr: ('r * 'a) -> 'r): 'r =
-fopr(res, !ref)
+(r0: 'a ref, res: 'r, fopr: ('r * 'a) -> 'r): 'r =
+fopr(res, !r0)
 
 fun
 ref_ifoldleft
-(ref: 'a ref, res: 'r, fopr: ('r * int * 'a) -> 'r): 'r =
-fopr(res, 0, !ref)
+(r0: 'a ref, res: 'r, fopr: ('r * int * 'a) -> 'r): 'r =
+fopr(res, 0, !r0)
