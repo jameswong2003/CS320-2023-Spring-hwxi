@@ -145,6 +145,21 @@ def image_blur_bbehav_color(image, ksize, bbehav):
 #    (image_blur_bbehav_color(balloons, 5, 'extend'), "OUTPUT/balloons_blurred.png")
 ####################################################
 
+def create_seam_list(height, width, energy_list):
+    # Format the Energy
+    l = [[0]*width for _ in range(height)]
+    for i in range(height):
+        for j in range(width):
+            l[i][j] = energy_list[i*width+j]
+
+    return l
+
+def find_lowest_seam(l):
+    current_row = 0
+    while current_row < len(l):
+        
+    return
+
 def image_seam_carving_color(image, ncol):
     """
     Starting from the given image, use the seam carving technique to remove
@@ -152,9 +167,14 @@ def image_seam_carving_color(image, ncol):
     """
     assert ncol < image.width
     energy = image_edges_color(image)
-    print(energy)
-    raise NotImplementedError
+    
+    img_height = image.height
+    img_width = image.width
+    print(create_seam_list(img_height, img_width, energy.pixlst))
+
 
 ####################################################
 # save_color_image(image_seam_carving_color(balloons, 100), "OUTPUT/balloons_seam_carving_100.png")
 ####################################################
+
+image_seam_carving_color(balloons, 100)
