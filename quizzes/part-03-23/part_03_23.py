@@ -55,16 +55,16 @@ def image_copy(image):
         imgvec.image_make_pylist\
         (hh, ww, int1_map_pylist(hh*ww, lambda ij: imgvec.image_get_pixel(image, ij//ww, ij%ww)))
 ####################################################
-# def image_rotate_090r(image):
-#     ww = image.width
-#     hh = image.height
-#     return \
-#         imgvec.image_make_pylist\
-#         (??, ??, int1_map_pylist(hh*ww, lambda ij: imgvec.image_get_pixel(image, ??????, ??????)))
-####################################################
-# balloons = \
-#     load_color_image\
-#     ("./../../assigns/05/MySolution/Python/INPUT/balloons.png")
+def image_rotate_090r(image):
+    ww = image.width
+    hh = image.height
+    i1 = imgvec.image_make_pylist(ww, hh, int1_map_pylist(hh*ww , lambda ij: imgvec.image_get_pixel(image, ij%hh, ij//hh)))
+    i2 = imgvec.image_make_pylist(hh, ww, int1_map_pylist(hh*ww , lambda ij: imgvec.image_get_pixel(i1, ij%ww, ij//ww)))
+    return imgvec.image_make_pylist(ww, hh, int1_map_pylist(hh*ww , lambda ij: imgvec.image_get_pixel(i2, ij%hh, ij//hh)))
+###################################################
+balloons = \
+    load_color_image\
+    ("./../../assigns/05/MySolution/Python/INPUT/balloons.png")
 # save_color_image(image_hreflect(balloons), "balloons_copy.png")
-# save_color_image(image_rotate_090r(balloons), "balloons_090r.png")
+save_color_image(image_rotate_090r(balloons), "balloons_090r.png")
 ####################################################
