@@ -145,20 +145,66 @@ def image_blur_bbehav_color(image, ksize, bbehav):
 #    (image_blur_bbehav_color(balloons, 5, 'extend'), "OUTPUT/balloons_blurred.png")
 ####################################################
 
-def create_seam_list(height, width, energy_list):
-    # Format the Energy
-    l = [[0]*width for _ in range(height)]
-    for i in range(height):
-        for j in range(width):
-            l[i][j] = energy_list[i*width+j]
-
-    return l
-
-def find_lowest_seam(l):
-    current_row = 0
-    while current_row < len(l):
+def create_list(long_list, width):
+    
+    energy_list = []
+    for i in range(0, len(long_list), width):
+        row = long_list[i:i + width]
+        energy_list.append(row)
         
-    return
+    return energy_list
+ 
+def find_min_seam(energy):
+    n_rows, n_cols = len(energy), len(energy[0])
+    dp = [[0] * n_cols for _ in range(n_rows)]
+    paths = [[-1] * n_cols for _ in range(n_rows)]
+    
+    for j in range(n_cols):
+        dp[0][j] = energy[0][j]
+    
+    for i in range(1, n_rows):
+        for j in range(n_cols):
+            
+            if j == 0:
+                dp[i][j] = energy[i][j] + min(dp[i-1][j], dp[i-1][j+1])
+                if dp[i-1][j] < dp[i-1][j+1]:
+                    paths[i][j] = j
+                else:
+                    paths[i][j] = j + 1
+            elif j == n_cols - 1:
+                dp[i][j] = energy[i][j] + min(dp[i-1][j], dp[i-1][j-1])
+                if dp[i-1][j] < dp[i-1][j-1]:
+                    paths[i][j] = j
+                else:
+                    paths[i][j] = j - 1
+            else:
+                dp[i][j] = energy[i][j] + min(dp[i-1][j-1], dp[i-1][j], dp[i-1][j+1])
+                if dp[i-1][j-1] <= dp[i-1][j] and dp[i-1][j-1] <= dp[i-1][j+1]:
+                    paths[i][j] = j - 1
+                elif dp[i-1][j] <= dp[i-1][j-1] and dp[i-1][j] <= dp[i-1][j+1]:
+                    paths[i][j] = j
+                else:
+                    paths[i][j] = j + 1
+    
+    # Find the minimum energy seam
+    j = dp[n_rows-1].index(min(dp[n_rows-1]))
+    seam = [(n_rows-1, j)]
+    for i in range(n_rows-2, -1, -1):
+        j = paths[i+1][j]
+        seam.append((i, j))
+    
+    return seam[::-1]
+
+
+def remove_seam(image, seam):
+    hh, ww = image.height, image.width
+    
+    # Define a function that returns whether a pixel is part of the seam to be removed
+    def is_seam_pixel(i, j):
+        return (i, j) in seam
+    
+    row_pixels = imgvec.image_i2filter_pylist(image, lambda i, j, _: not is_seam_pixel(i, j))
+    return imgvec.image_make_pylist(hh, ww - 1, row_pixels)
 
 def image_seam_carving_color(image, ncol):
     """
@@ -166,15 +212,14 @@ def image_seam_carving_color(image, ncol):
     ncols (an integer) columns from the image. Returns a new image.
     """
     assert ncol < image.width
-    energy = image_edges_color(image)
-    
-    img_height = image.height
-    img_width = image.width
-    print(create_seam_list(img_height, img_width, energy.pixlst))
-
+    for i in range(ncol):
+        energy = image_edges_color(image)
+        energy_map = create_list(list(energy.pixlst), energy.width)
+        seam = find_min_seam(energy_map)
+        image = remove_seam(image, seam)
+    return image
 
 ####################################################
-# save_color_image(image_seam_carving_color(balloons, 100), "OUTPUT/balloons_seam_carving_100.png")
+save_color_image(image_seam_carving_color(balloons, 100), "OUTPUT/balloons_seam_carving_100.png")
 ####################################################
 
-image_seam_carving_color(balloons, 100)
