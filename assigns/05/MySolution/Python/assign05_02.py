@@ -27,8 +27,6 @@ def word_neighbors(word):
 
     return fnlist_concat(string_imap_fnlist(word, lambda i, c: fnlist_concat(string_imap_fnlist(AB, lambda _, c1: fnlist_sing(string_tabulate(length, lambda j: word[j] if i != j else c1)) if (c != c1) else fnlist_nil()))))
 
-    
-
     raise NotImplementedError
 #
 ####################################################
