@@ -18,6 +18,20 @@ stream consist of lists that are columns of the
 matrix.
 *)
 
+fun
+stream_ziplst(xs: 'a stream list): 'a list stream = fn() =>
+let
+    fun helper(xs, n) =
+    let
+        val l = list_foldright(xs, [], fn(a, strm) =>  
+        stream_get_at(strm, n) :: a ) 
+    in
+        strcon_cons(l, fn() => helper(xs, n+1) )
+    end handle Subscript => strcon_nil
+in
+    helper(xs,0)
+end
+
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-assign07-01.sml] *)
