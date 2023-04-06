@@ -42,10 +42,11 @@ def doublet_bfs_test(w1, w2):
     it returns a path connecting w1 and w2 that attests to the
     two words forming a doublet.
     """
-    filtered = stream_make_filter(gpath_bfs([w1], children), lambda path: path[-1] == w2)()
-    if filtered.get_ctag() == 0:
+    filt = stream_make_filter(gpath_bfs([w1], children), lambda path: path[-1] == w2)()
+    if filt.get_ctag() == 0:
         return None
-    return filter.get_cons1()
+    else:
+        return filt.get_cons1()
 
     raise NotImplementedError
 ####################################################
