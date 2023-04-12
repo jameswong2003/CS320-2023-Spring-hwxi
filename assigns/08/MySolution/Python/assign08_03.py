@@ -32,20 +32,20 @@ def generator_graph_bfs(nxs, fnexts):
     This function does the same as graph_bfs.
     """
     visited = set()
-    qnxs = queue.Queue()
+    xs = queue.Queue()
     
     for nx0 in nxs:
-        qnxs.put(nx0)
+        xs.put(nx0)
         visited.add(nx0)
 
     while True:
-        if qnxs.empty():
+        if xs.empty():
             break
         else:
-            nx1 = qnxs.get()
+            nx1 = xs.get()
             for nx2 in fnexts(nx1):
                 if not nx2 in visited:
-                    qnxs.put(nx2)
+                    xs.put(nx2)
                     visited.add(nx2)
             yield nx1
 
