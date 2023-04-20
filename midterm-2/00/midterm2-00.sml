@@ -23,11 +23,17 @@ first n elements of fxs.
 
 (* ****** ****** *)
 
-(*
 fun
 stream_take
-(fxs: 'a stream, n: int): 'a stream = ...
-*)
+(fxs: 'a stream, n: int): 'a stream = fn() =>
+case fxs() of 
+    strcon_nil => strcon_nil
+|   strcon_cons(x0, fxs) => 
+    if n > 0 
+        then strcon_cons(x0, stream_take(fxs, n - 1))
+    else
+        strcon_nil
+
 
 (* ****** ****** *)
 
