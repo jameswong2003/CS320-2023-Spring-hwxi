@@ -37,12 +37,17 @@ case fxs() of
 
 (* ****** ****** *)
 
-(*
+
 fun
 stream_drop
-(fxs: 'a stream, n: int): 'a stream = ...
-*)
-
+(fxs: 'a stream, n: int): 'a stream = fn() =>
+case fxs() of
+    strcon_nil => strcon_nil
+|   strcon_cons(x0, fxs) =>
+    if n > 0
+        then stream_drop(fxs, n - 1)
+    else
+        strcon_cons(x0, fxs)
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-midterm2-00.sml] *)
