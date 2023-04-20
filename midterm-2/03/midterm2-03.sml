@@ -24,13 +24,13 @@ let
     let
         val l = foreach_to_foldleft(stream_foreach)
         (xs, fn() => strcon_nil, fn(a, strm) => 
-            stream_append(a, fn() => strcon_cons(stream_get_at(strm, n), fn() => strcon_nil  )  )
+            stream_append(a, fn() => strcon_cons(stream_get_at(strm, n), fn() => strcon_nil))
         ) 
     in
-        strcon_cons(l, fn() => helper(xs, n+1) )
+        strcon_cons(l, fn() => helper(xs, n + 1))
     end
 in
-    helper(fxss,0)
+    helper(fxss, 0)
 end
 
 (* ****** ****** *)
