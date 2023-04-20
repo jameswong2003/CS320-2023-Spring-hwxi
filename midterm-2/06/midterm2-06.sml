@@ -35,11 +35,22 @@ perm_counting_out([1,2,3,4], 3) = [4,1,3,2]
 
 (* ****** ****** *)
 
-(*
-fun
-perm_counting_out
-(xs: int list, k0: int): int list = ...
-*)
+fun perm_counting_out(xs: int list, k0: int): int list =
+    let
+        fun perm_counting_out_helper(acc, ys, k, len) =
+            if len = 0 then List.rev acc
+            else let
+                val i = (k + k0) mod len
+                val x = List.nth(ys, i)
+                val ys' = List.take(ys, i) @ List.drop(ys, i+1)
+            in
+                perm_counting_out_helper(x::acc, ys', i, len-1)
+            end
+    in
+        perm_counting_out_helper([], xs, 0, List.length(xs))
+    end
+
+
 
 (* ****** ****** *)
 
