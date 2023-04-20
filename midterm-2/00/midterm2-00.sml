@@ -23,31 +23,20 @@ first n elements of fxs.
 
 (* ****** ****** *)
 
-fun
-stream_take
-(fxs: 'a stream, n: int): 'a stream = fn() =>
-case fxs() of 
-    strcon_nil => strcon_nil
-|   strcon_cons(x0, fxs) => 
-    if n > 0 
-        then strcon_cons(x0, stream_take(fxs, n - 1))
-    else
-        strcon_nil
-
+fun stream_take (fxs: 'a stream, n: int): 'a stream =
+  if n <= 0 then stream_nil()
+  else
+    case fxs() of
+      strcon_nil => stream_nil()  | strcon_cons(x, fx) => stream_cons(x, stream_take (fx, n - 1))
 
 (* ****** ****** *)
 
 
-fun
-stream_drop
-(fxs: 'a stream, n: int): 'a stream = fn() =>
-case fxs() of
-    strcon_nil => strcon_nil
-|   strcon_cons(x0, fxs) =>
-    if n > 0
-        then stream_drop(fxs, n - 1)
-    else
-        strcon_cons(x0, fxs)
+fun stream_drop (fxs: 'a stream, n: int): 'a stream =
+  if n <= 0 then fxs
+  else
+    case fxs() of
+      strcon_nil => stream_nil()  | strcon_cons(x, fx) => stream_drop (fx, n - 1)
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-midterm2-00.sml] *)
