@@ -34,6 +34,20 @@ perm_counting_out([1,2,3,4], 3) = [4,1,3,2]
 *)
 
 (* ****** ****** *)
+fun list_take (xs: 'a list, n: int): 'a list =
+  if n <= 0 then []
+  else
+    case xs of
+      [] => []  
+    | x::xs' => x::list_take(xs', n - 1)
+
+fun list_drop (xs: 'a list, n: int): 'a list =
+  if n <= 0 then xs
+  else
+    case xs of
+      [] => []  
+    | x::xs' => list_drop(xs', n - 1)
+
 
 fun perm_counting_out(xs: int list, k0: int): int list =
     let
@@ -41,8 +55,8 @@ fun perm_counting_out(xs: int list, k0: int): int list =
             if len = 0 then List.rev acc
             else let
                 val i = (k + k0) mod len
-                val x = List.nth(ys, i)
-                val ys' = List.take(ys, i) @ List.drop(ys, i+1)
+                val x = list_get_at(ys, i)
+                val ys' = list_take(ys, i) @ list_drop(ys, i+1)
             in
                 perm_counting_out_helper(x::acc, ys', i, len-1)
             end
