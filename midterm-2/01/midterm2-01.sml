@@ -35,11 +35,11 @@ stream_evaluate
     let fun help(fxs, xn, n) = fn() =>
       case fxs() of
         strcon_nil => strcon_nil
-      | strcon_cons(an, fxs') =>
+      | strcon_cons(an, fxs) =>
           let
             val x1 = xn + an * power(x0 ,n)
           in
-            strcon_cons(x1, help(fxs', x1, n+1))
+            strcon_cons(x1, help(fxs, x1, n+1))
           end
   in
     help(fxs, 0.0, 0)
