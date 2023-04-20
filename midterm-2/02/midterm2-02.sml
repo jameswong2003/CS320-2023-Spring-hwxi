@@ -24,10 +24,26 @@ datatype 'a mytree =
 
 (* ****** ****** *)
 
-(*
-fun
-mytree_dfs_streamize(t0: 'a mytree): 'a stream = ...
-*)
+
+fun mytree_dfs_streamize (t: 'a mytree): 'a stream =
+  let
+    fun mytree_dfs_helper (t: 'a mytree): 'a stream =
+      case t of
+        mytree_node (x, []) => stream_cons (x, stream_nil())
+      | mytree_node (x, ts) => 
+        let
+          fun mytree_dfs_helper_list (ts: 'a mytree list): 'a stream =
+            case ts of
+              [] => stream_nil()
+            | (t::ts) => stream_append (mytree_dfs_helper t, mytree_dfs_helper_list ts)
+        in
+          stream_cons (x, mytree_dfs_helper_list ts)
+        end
+  in
+    mytree_dfs_helper t
+  end
+
+
 
 (* ****** ****** *)
 
