@@ -1,3 +1,6 @@
+import sys
+sys.path.append('./../../../../mypylib')
+from mypylib_cls import *
 ########################
 # HX-2023-04-15: 10 points
 ########################
@@ -28,5 +31,28 @@ wordle_hint(w1, w2) =
 """
 ########################################################################
 def wordle_hint(w1, w2):
-    raise NotImplementedError
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    marks = [~1] * len(w1)
+    word_dict = dict()
+    for i in alphabet:
+        word_dict[i] = 0
+    for c in w1:
+        word_dict[c] += 1
+    guess_cs = list(w2)
+
+    for i,c in enumerate(w2):
+        if c == w1[i]:
+            marks[i] = 1
+            guess_cs[i] = 0
+            word_dict[c] -= 1
+
+    for i,c0 in enumerate(guess_cs):
+        if c0 != 0:
+            if word_dict[c0] > 0:
+                marks[i] = 2
+                word_dict[c0] -= 1
+            else:
+                marks[i] = 0
+
+    return string_imap_pylist(w2, lambda i,c: (marks[i],c))
 ########################################################################
